@@ -3,10 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('signup', [AuthController::class, 'signup']);
@@ -14,6 +11,8 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 });
 
-//Route::prefix('/auth')
-//    ->name('auth.')
-//    ->group(base_path('routes/api/auth/routes.php'));
+Route::group(['middleware' => 'api', 'prefix' => 'admin', 'name' => 'admin'], function () {
+    $routesPath = "routes/api/admin";
+    Route::prefix("/employees")->name("employees.")
+        ->group(base_path("{$routesPath}/employees_routes.php"));
+});
