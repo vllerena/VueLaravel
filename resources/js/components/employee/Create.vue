@@ -40,7 +40,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="text" v-model="form.sallery" class="form-control" placeholder="Enter Your Sallery">
+                                                        <input type="number" step="any" v-model="form.sallery" class="form-control" placeholder="Enter Your Sallery">
                                                         <small class="text-danger" v-if="errors.sallery">{{errors.sallery[0]}}</small>
                                                     </div>
                                                 </div>
@@ -56,7 +56,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="text" v-model="form.nid" class="form-control" placeholder="Enter Your NID">
+                                                        <input type="number" v-model="form.nid" class="form-control" placeholder="Enter Your NID">
                                                         <small class="text-danger" v-if="errors.nid">{{errors.nid[0]}}</small>
                                                     </div>
                                                 </div>
@@ -75,14 +75,14 @@
                                                         <div class="form-row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <input type="file" class="custom-file-input" id="customFile">
-                                                                    <label class="custom-file-label" for="customFile">Choose File</label>
+                                                                    <input type="file" class="custom-file-input" id="customFile" @change="onFileSelected">
                                                                     <small class="text-danger" v-if="errors.photo">{{errors.photo[0]}}</small>
+                                                                    <label class="custom-file-label" for="customFile">Choose File</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <img src="form.photo" style="height: 40px; width: 40px">
+                                                                    <img :src="form.photo" style="height: 60px; width: 60px" alt="photo">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -137,15 +137,24 @@ export default {
     methods: {
         employeeStore() {
             axios.post('/api/admin/employees/store', this.form)
-                .then(res => {
-                    User.responseAfterLogin(res)
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Signed in successfully'
-                    })
-                    this.$router.push({name: 'home'})
+                .then(() => {
+                    this.$router.push({name: 'index-employee'})
+                    Notification.success()
                 })
                 .catch(error => this.errors = error.response.data.errors)
+        },
+        onFileSelected(event) {
+            let file = event.target.files[0];
+            if (file.size > 1048770) {
+                Notification.image_validation()
+            } else {
+                let reader = new FileReader();
+                reader.onload = event => {
+                    this.form.photo = event.target.result
+                    console.log(event.target.result)
+                }
+                reader.readAsDataURL(file);
+            }
         }
     }
 }
