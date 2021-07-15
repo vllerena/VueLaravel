@@ -10,15 +10,15 @@ use Image;
 
 class EmployeesController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('JWT');
-//    }
-
     public function index()
     {
         $employees = Employee::all();
         return response()->json($employees);
+    }
+
+    public function show(Employee $employee)
+    {
+        return response()->json($employee);
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class EmployeesController extends Controller
             $img->save($image_url);
         }
 
-        $employe = Employee::create([
+        $employee = Employee::create([
             EmployeeAttr::NAME => $request->name,
             EmployeeAttr::EMAIL => $request->email,
             EmployeeAttr::PHONE => $request->phone,
@@ -51,6 +51,51 @@ class EmployeesController extends Controller
             EmployeeAttr::JOINING_DATE => $request->joining_date,
         ]);
 
-        return response()->json($employe);
+        return response()->json($employee);
+    }
+
+    public function update(Employee $employee, Request $request)
+    {
+        $validate = $request->validate([
+            EmployeeAttr::NAME => 'required',
+            EmployeeAttr::EMAIL => 'required | email',
+            EmployeeAttr::PHONE => 'required',
+        ]);
+
+        if ($request->newphoto){
+            if ($employee->photo){
+                unlink($employee->photo);
+            }
+            $position = strpos($request->newphoto, ';');
+            $sub = substr($request->newphoto,0, $position);
+            $ext = explode('/', $sub)[1];
+            $name = time().".".$ext;
+            $img = Image::make($request->newphoto)->resize(240, 200);
+            $upload_path = 'backend/employee/';
+            $image_url = $upload_path.$name;
+            $img->save($image_url);
+        }
+
+        $employe = $employee->update([
+            EmployeeAttr::NAME => $request->name,
+            EmployeeAttr::EMAIL => $request->email,
+            EmployeeAttr::PHONE => $request->phone,
+            EmployeeAttr::SALLERY => $request->sallery,
+            EmployeeAttr::ADDRESS => $request->address,
+            EmployeeAttr::PHOTO => isset($request->newphoto) ? $image_url : $employee->photo,
+            EmployeeAttr::NID => $request->nid,
+            EmployeeAttr::JOINING_DATE => $request->joining_date,
+        ]);
+
+        return response()->json($request);
+    }
+
+    public function destroy(Employee $employee)
+    {
+        $photo = $employee->photo;
+        if ($photo){
+            unlink($photo);
+        }
+        $employee->delete();
     }
 }

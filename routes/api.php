@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\API\Admin\EmployeesController;
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
@@ -10,6 +11,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 });
+
+//Route::apiResource('/employee', 'API\Admin\EmployeesController');
 
 Route::group(['middleware' => 'api', 'prefix' => 'admin', 'name' => 'admin'], function () {
     $routesPath = "routes/api/admin";

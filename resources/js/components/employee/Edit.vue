@@ -11,9 +11,9 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Add Employee</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Edit Employee</h1>
                                     </div>
-                                    <form @submit.prevent="employeeStore" enctype="multipart/form-data">
+                                    <form @submit.prevent="employeeUpdate" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <div class="form-row">
                                                 <div class="col-md-6">
@@ -91,7 +91,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                                            <button type="submit" class="btn btn-primary btn-block">Update</button>
                                         </div>
                                         <hr>
                                     </form>
@@ -113,30 +113,36 @@
 
 <script>
 export default {
-    name: "Create",
+    name: "Edit",
     created() {
         if (!User.loggedIn()){
             this.$router.push({name: '/'})
         }
+        let id = this.$route.params.id
+        axios.get('/api/admin/employees/show/' + id)
+        .then(({data}) => (this.form = data))
+        .catch()
     },
     data() {
         return {
             form: {
-                name: null,
-                email: null,
-                phone: null,
-                sallery: null,
-                address: null,
-                photo: null,
-                nid: null,
-                joining_date: null,
+                name: '',
+                email: '',
+                phone: '',
+                sallery: '',
+                address: '',
+                photo: '',
+                newphoto: '',
+                nid: '',
+                joining_date: '',
             },
             errors: {}
         }
     },
     methods: {
-        employeeStore() {
-            axios.post('/api/admin/employees/store', this.form)
+        employeeUpdate() {
+            let id = this.$route.params.id
+            axios.patch('/api/admin/employees/update/' + id, this.form)
                 .then(() => {
                     this.$router.push({name: 'index-employee'})
                     Notification.success()
@@ -150,7 +156,7 @@ export default {
             } else {
                 let reader = new FileReader();
                 reader.onload = event => {
-                    this.form.photo = event.target.result
+                    this.form.newphoto = event.target.result
                 }
                 reader.readAsDataURL(file);
             }
