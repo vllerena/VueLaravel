@@ -18,4 +18,6 @@ Route::group(['middleware' => 'api', 'prefix' => 'admin', 'name' => 'admin'], fu
     $routesPath = "routes/api/admin";
     Route::prefix("/employees")->name("employees.")
         ->group(base_path("{$routesPath}/employees_routes.php"));
+    Route::prefix("/suppliers")->name("suppliers.")
+        ->group(base_path("{$routesPath}/suppliers_routes.php"));
 });
