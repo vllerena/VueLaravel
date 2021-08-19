@@ -38,18 +38,6 @@
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="tel" v-model="form.phone" class="form-control"
-                                                               placeholder="Enter Your Phone">
-                                                        <small class="text-danger"
-                                                               v-if="errors.phone">{{ errors.phone[0] }}</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <input type="text" v-model="form.address"
                                                                class="form-control"
                                                                placeholder="Enter Your Address">
@@ -59,10 +47,11 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="number" v-model="form.nid" class="form-control"
-                                                               placeholder="Enter Your NID">
+                                                        <input type="text" v-model="form.shopname"
+                                                               class="form-control"
+                                                               placeholder="Enter Your Shopname">
                                                         <small class="text-danger"
-                                                               v-if="errors.nid">{{ errors.nid[0] }}</small>
+                                                               v-if="errors.shopname">{{ errors.shopname[0] }}</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,11 +60,10 @@
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="date" v-model="form.shopname"
-                                                               class="form-control"
-                                                               placeholder="Enter Your Shopname">
+                                                        <input type="tel" v-model="form.phone" class="form-control"
+                                                               placeholder="Enter Your Phone">
                                                         <small class="text-danger"
-                                                               v-if="errors.shopname">{{ errors.shopname[0] }}</small>
+                                                               v-if="errors.phone">{{ errors.phone[0] }}</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -99,6 +87,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-row">
+
                                             </div>
                                         </div>
                                         <div class="form-group">

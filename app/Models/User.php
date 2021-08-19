@@ -48,11 +48,11 @@ class User extends Authenticatable implements JWTSubject
         return $this[UserAttr::ES_SUPERUSER];
     }
 
-    public function token()
-    {
-        return $this->hasOne(Token::class, TokenAttr::USER_ID,
-            UserAttr::ID);
-    }
+//    public function token()
+//    {
+//        return $this->hasOne(Token::class, TokenAttr::USER_ID,
+//            UserAttr::ID);
+//    }
 
     public function getJWTIdentifier()
     {
